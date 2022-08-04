@@ -1,9 +1,13 @@
 
 import axios from 'axios'
+
+import { useNavigate } from "react-router-dom";
 import React, { Component } from 'react';
 import {useEffect, useState} from "react"
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import apiClient from './api/apiClient';
+import { useParams } from "react-router-dom";
 import './App.css';
 
 
@@ -133,17 +137,18 @@ export function App() {
   })
   
         setMovies(data.results)
-        console.log(data.results);
+        
         
   
 }
 
 const IMAGE_PATH = "https://image.tmdb.org/t/p/w342"; 
- const renderMovies = () => (
+const navigate = useNavigate(); 
+const renderMovies = () => (
   
   movies.map(movie => (
     
-    <Link to="/movieINformations" className='links-individual-pphoto' > 
+    <button className='buttonForNavigation' onClick={() => navigate(`/movieINformations/${movie.id}`)}>
       <Movie
           
           key={movie.id}
@@ -151,9 +156,8 @@ const IMAGE_PATH = "https://image.tmdb.org/t/p/w342";
           poster = {movie.poster_path}
           
       />
-      {/* {IMAGE_PATH + movie.poster_path}
-      {movie.title} */}
-      </Link>
+      
+      </button>
       
       
   ))
@@ -194,67 +198,70 @@ const IMAGE_PATH = "https://image.tmdb.org/t/p/w342";
   );
   
 }
-export function MovieDetails(){
-
-  const MOVIE_API = "https://api.themoviedb.org/3/"
-  const DISCOVER_API = MOVIE_API + "discover/movie"
-  const API_KEY = "ebc837392e4b2186424dd73076c9edfa"
+export function MovieDetails() {
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(false);
   const BACKDROP_PATH = "https://image.tmdb.org/t/p/w1280"
   const IMAGE_PATH = "https://image.tmdb.org/t/p/w342"; 
-  
-  const [movie, setMovie] = useState([])
+  let { movieId } = useParams();
 
   useEffect(() => {
-    fetchMovies()
-  },  [])
-
-  const fetchMovies = async (event) => {
-
-    const {data} = await axios.get(`${DISCOVER_API}`, {
-      params: {
-          api_key: API_KEY
-         
-      }
-
-  })
-        setMovie(data.results[0])
-        console.log(data.results);
-        
-}
-
-
+    setLoading(true);
+    apiClient.getMovieData(movieId)
+    .then(res => {
+      setMovie(res);
+      setLoading(false);
+    })
+    .catch((e) => {
+      console.log(e);
+      setLoading(false);
+    });
+  }, [movieId]);
 
   return (
-    
-    <div className={"container1"} style={{backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(${BACKDROP_PATH}${movie.backdrop_path})`}}>
+    <>
+    {loading && (
+      <div>Loading...</div>
+    )}
+    {!loading && movie && (
+      <>
+            <div className={"container1"} style={{backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(${BACKDROP_PATH}${movie.general.backdrop_path})`}}>
       <div className="movie-title1">
               
-              <img src={IMAGE_PATH + movie.poster_path} />
+              <img src={IMAGE_PATH + movie.general.poster_path} />
               
               <div className={"titleAndIMdb"}>
                   <br></br>
-                  <div >{movie.title}</div>
+                  <div >{movie.general.title}</div>
                   <br></br>
-                  <span>IMDB: </span><span>{movie.vote_average}</span>
+                  <span>IMDB: </span><span>{movie.general.vote_average}</span>
                   <br></br>
                   <br></br>
-                  <span>Release: </span><span>{movie.release_date}</span>
+                  <span>Release: </span><span>{movie.general.release_date}</span>
                   <br></br>
                   
               </div>
           </div>
       <div>   
-     <div className='movieSummary'>{movie.overview}</div>
+     <div className='movieSummary'>{movie.general.overview}</div>
      <br></br>
      <br></br>
      <button className='PlayButton'>►</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     {/* <button className='PlayButton1'>🖤</button> */}
-     {/* <div>{movie.related}</div> */}
+     
+     
      
 </div>
 </div>
-  )
+      </>
+    )}
+    </>
+  );
 }
+
+
+
+
+
 
 
 

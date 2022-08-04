@@ -17,7 +17,7 @@ ReactDOM.render(
       <Route path="/country" element={<Country />} />
       <Route path="/movies" element={<Movies />} />
       <Route path="/tvseries" element={<TVSeries />} />
-      <Route path="/movieINformations" element={<MovieDetails />} />
+      <Route path="/movieINformations/:movieId" element={<MovieDetails />} />
       
       
     </Routes>

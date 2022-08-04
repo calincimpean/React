@@ -118,7 +118,6 @@ background: #FFFFFF;
   padding-left:2vw;
   padding-right:2vw;
   width:95vw;
-  link-style:none;
   text-decoration: none;
   color:white;
   cursor:pointer
@@ -213,12 +212,22 @@ h5{
       padding-right: 10px;
       padding-top: 5px;
       padding-bottom: 5px;
-      padding-top: 6px;
+      padding-top: 7px;
 
 }
+
+.buttonForNavigation{
+  background-color: #000000;
+  border:none;
+  
+}
+
 .PlayButton1:hover{
   color: red;
   background-color: aliceblue;
   transform: scale(1.2);
 }
-
+.colorwhite{
+  color: black;
+  background-color: rgb(133, 159, 159);
+}
