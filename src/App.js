@@ -60,8 +60,7 @@ export function Gener() {
     <div>
       <nav>
         <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
+        
       </nav>
       <h1>Contact Us</h1>
     </div>
@@ -225,7 +224,7 @@ export function MovieDetails() {
     )}
     {!loading && movie && (
       <>
-            <div className={"container1"} style={{backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(${BACKDROP_PATH}${movie.general.backdrop_path})`}}>
+            <div className={"container1"} style={{backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(${BACKDROP_PATH}${movie.general.backdrop_path})`,backgroundSize:"cover",backgroundPosition:"top center;"}}>
       <div className="movie-title1">
               
               <img src={IMAGE_PATH + movie.general.poster_path} />
